@@ -21,3 +21,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T21:38:34	plan	claude	commit	54	71591	30	0	410	plan next phase
 2026-08-23T21:43:48	loop	qwen	commit	47	7803	18	5	316	- [ ] §D1 — `src/routes/chat.ts` streams: drop the 501 block, pipe the upstream
 2026-08-23T21:56:21	loop	qwen	commit	92	18384	37	7	753	- [ ] §D2 — Streaming route tests in `test/streaming.test.ts`, mirroring
+2026-08-23T22:06:48	loop	qwen	commit	86	19156	34	4	627	- [ ] §D3 — Streaming failover tests in `test/streaming-failover.test.ts`,
