@@ -42,4 +42,55 @@ describe('startMockUpstream', () => {
       await upstream.close();
     }
   });
+
+  it('answers a stream: true request with a real SSE body ending in [DONE]', async () => {
+    const upstream = await startMockUpstream({ content: 'streamed words' });
+    try {
+      const response = await fetch(`${upstream.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ model: 'mock-model', messages: [], stream: true }),
+      });
+      const text = await response.text();
+
+      expect(response.status).toBe(200);
+      expect(response.headers.get('content-type')).toContain('text/event-stream');
+      expect(text.split('data: ').length - 1).toBe(4);
+      expect(text).toContain('"content":"streamed words"');
+      expect(text.trimEnd().endsWith('data: [DONE]')).toBe(true);
+    } finally {
+      await upstream.close();
+    }
+  });
+
+  it('honours an explicit streamChunks sequence', async () => {
+    const upstream = await startMockUpstream({ streamChunks: ['{"a":1}', '[DONE]'] });
+    try {
+      const response = await fetch(`${upstream.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ model: 'mock-model', messages: [], stream: true }),
+      });
+
+      expect(await response.text()).toBe('data: {"a":1}\n\ndata: [DONE]\n\n');
+    } finally {
+      await upstream.close();
+    }
+  });
+
+  it('still answers a stream: true request with JSON when chatStatus is an error', async () => {
+    const upstream = await startMockUpstream({ chatStatus: 500 });
+    try {
+      const response = await fetch(`${upstream.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ model: 'mock-model', messages: [], stream: true }),
+      });
+
+      expect(response.status).toBe(500);
+      expect(response.headers.get('content-type')).toContain('application/json');
+    } finally {
+      await upstream.close();
+    }
+  });
 });

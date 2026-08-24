@@ -33,6 +33,13 @@ export type MockUpstreamOptions = {
   content?: string;
   /** Full control over the chat reply body; overrides `content`. */
   chatBody?: (body: ChatRequestBody) => unknown;
+  /**
+   * `data:` payloads for a `stream: true` request, in order. Defaults to a
+   * three-delta OpenAI chunk sequence followed by `[DONE]`. Each entry is
+   * written as its own `data: <entry>\n\n` frame in its own socket write, so
+   * a client really does see several chunks.
+   */
+  streamChunks?: string[];
 };
 
 export type MockUpstream = {
@@ -60,6 +67,26 @@ function defaultChatBody(body: ChatRequestBody, content: string): unknown {
     ],
     usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
   };
+}
+
+/** The chunk sequence a real OpenAI-compatible server sends for one short reply. */
+function defaultStreamChunks(body: ChatRequestBody, content: string): string[] {
+  const model = body.model ?? 'mock-model';
+  const chunk = (delta: unknown, finishReason: string | null): string =>
+    JSON.stringify({
+      id: 'chatcmpl-mock',
+      object: 'chat.completion.chunk',
+      created: 1700000000,
+      model,
+      choices: [{ index: 0, delta, finish_reason: finishReason }],
+    });
+
+  return [
+    chunk({ role: 'assistant', content: '' }, null),
+    chunk({ content }, null),
+    chunk({}, 'stop'),
+    '[DONE]',
+  ];
 }
 
 export async function startMockUpstream(
@@ -95,6 +122,23 @@ export async function startMockUpstream(
     const body = (request.body ?? {}) as ChatRequestBody;
     const last = requests.at(-1);
     if (last) last.body = body;
+
+    // A streaming request gets a real SSE body — one socket write per frame,
+    // so the gateway's pass-through is exercised, not simulated.
+    if (body.stream === true && chatStatus < 400) {
+      const frames = options.streamChunks ?? defaultStreamChunks(body, content);
+      reply.raw.statusCode = chatStatus;
+      reply.raw.setHeader('content-type', 'text/event-stream; charset=utf-8');
+      reply.raw.setHeader('cache-control', 'no-cache');
+      reply.hijack();
+      for (const frame of frames) {
+        reply.raw.write(`data: ${frame}\n\n`);
+        await new Promise((resolve) => setImmediate(resolve));
+      }
+      reply.raw.end();
+      return;
+    }
+
     return reply
       .status(chatStatus)
       .send(options.chatBody ? options.chatBody(body) : defaultChatBody(body, content));

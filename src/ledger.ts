@@ -39,6 +39,12 @@ export type LedgerEvent = {
   latencyMs?: number;
   /** How many backends were contacted before this outcome. */
   attempts?: number;
+  /**
+   * True when the answer was proxied as an SSE stream. Failover happens at
+   * request start only, so a streamed entry names the one backend the client
+   * was committed to.
+   */
+  stream?: boolean;
   /** `host:port` refused by the boot allowlist (`egress_refused` only). */
   destination?: string;
   /** Failure message, when there is one. */
