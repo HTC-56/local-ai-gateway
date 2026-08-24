@@ -9,8 +9,8 @@ are the one permitted exception to append-only docs.
 | 2 | Logical model routing | SHIPPED | A | config resolver + /v1/models |
 | 3 | Health + failover | SHIPPED | B | probes, circuit + cooldown, priority-list failover |
 | 4 | SSE streaming pass-through | NOT BUILT | — | returns 501 until its phase |
-| 5 | Egress attestation | PARTIAL | A | allowlist + counters; /attest endpoint pending |
-| 6 | Ops surface (/healthz, /metrics, ledger, auth) | PARTIAL | B | /healthz live; metrics, auth, ledger pending |
+| 5 | Egress attestation | PARTIAL | A | allowlist, counters, refusal→ledger hook; /attest endpoint lands in C |
+| 6 | Ops surface (/healthz, /metrics, ledger, auth) | PARTIAL | B | /healthz live; ledger + metrics engines in, routes and auth land in C |
 | 7 | Deploy-grade packaging (config, unit, README, CI) | PARTIAL | B | config, unit, CI, README + failover demo, smoke script; hero screenshot waits on the dashboard |
 | 8 | Dashboard | NOT BUILT | — | |
 | — | docs/PROCESS.md (the loop story) | NOT BUILT | — | written near the end, when there is a ledger to excerpt |

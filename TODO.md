@@ -63,3 +63,35 @@ built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
 - [x] §B6 — `bash verify.sh` green, then append the Phase B section to
   `STATUS.md` and set the ROADMAP.md rows and reservations listed in
   TASK_PHASE_B.md §B6. Gate: `bash verify.sh`.
+
+## Phase C: the ops surface — see TASK_PHASE_C.md
+
+The engines (`src/ledger.ts`, `src/metrics.ts`, their 19 tests, the
+`ctx.ledger` / `ctx.metrics` wiring and the egress refusal hook) are already
+committed — see "Already built" in TASK_PHASE_C.md. Gate for every task below:
+`pnpm typecheck` + `pnpm test` + `bash scripts/scrub-check.sh`, unless its
+section says otherwise.
+
+- [ ] §C1 — `GET /attest` in `src/routes/attest.ts`, mirroring
+  `src/routes/healthz.ts`; register it in `src/app.ts`; test in
+  `test/attest.test.ts`. Spec: TASK_PHASE_C.md §C1.
+
+- [ ] §C2 — `GET /metrics` in `src/routes/metrics.ts`, mirroring
+  `src/routes/attest.ts`; register it in `src/app.ts`; test in
+  `test/metrics-route.test.ts`. Spec: TASK_PHASE_C.md §C2.
+
+- [ ] §C3 — `src/routes/chat.ts` reports each attempt to `ctx.metrics` and
+  `ctx.ledger`. New tests in `test/instrumentation.test.ts`; `chat.test.ts`
+  and `failover.test.ts` stay green and unedited. Spec: TASK_PHASE_C.md §C3.
+
+- [ ] §C4 — Static bearer token auth in `src/auth.ts`, an `onRequest` hook
+  registered in `src/app.ts`; `/healthz` and `/` stay open; test in
+  `test/auth.test.ts`. Spec: TASK_PHASE_C.md §C4.
+
+- [ ] §C5 — `README.md`: fix the failover demo's YAML keys, document
+  `/attest`, `/metrics`, the ledger and auth in Ops. Extra gate:
+  `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_C.md §C5.
+
+- [ ] §C6 — `bash verify.sh` green, then append the Phase C section to
+  `STATUS.md` and set the ROADMAP.md rows and reservations listed in
+  TASK_PHASE_C.md §C6. Gate: `bash verify.sh`.
