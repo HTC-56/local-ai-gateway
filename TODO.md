@@ -32,3 +32,34 @@ section says otherwise.
 - [x] §A10 — `bash verify.sh` green, then append the Phase A section to
   `STATUS.md` and set the ROADMAP.md rows listed in TASK_PHASE_A.md §A10.
   Gate: `bash verify.sh`.
+
+## Phase B: health, failover, and the two-box demo — see TASK_PHASE_B.md
+
+The engine (`src/health.ts`, its 14 tests, the `ctx.health` wiring and the
+`health.generationProbe` config knob) is already committed — see "Already
+built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
+`pnpm test` + `bash scripts/scrub-check.sh`, unless its section says otherwise.
+
+- [ ] §B1 — `/healthz` serves live state from `ctx.health.snapshot()` in
+  `src/routes/healthz.ts`, plus an `ok`/`degraded` summary; update and extend
+  `test/app.test.ts`. Spec: TASK_PHASE_B.md §B1.
+
+- [ ] §B2 — Failover in `src/routes/chat.ts`: walk every resolved target, skip
+  backends whose circuit is open, report each result to `ctx.health`. The four
+  tests in `test/chat.test.ts` stay green and unedited. Spec: TASK_PHASE_B.md §B2.
+
+- [ ] §B3 — Failover tests in `test/failover.test.ts`, mirroring
+  `test/chat.test.ts`. Five assertions are listed in TASK_PHASE_B.md §B3.
+  No production code in this task.
+
+- [ ] §B4 — `scripts/smoke-local.sh`, the local-only end-to-end plus forced
+  failover check, mirroring `scripts/readme-lint.sh`. Never wired into CI or
+  verify.sh. Extra gate: `bash -n scripts/smoke-local.sh`. Spec: TASK_PHASE_B.md §B4.
+
+- [ ] §B5 — `README.md`: add the 10-minute failover demo, rewrite Ops for the
+  live `/healthz`, fix the stale Limitations line. Extra gate:
+  `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_B.md §B5.
+
+- [ ] §B6 — `bash verify.sh` green, then append the Phase B section to
+  `STATUS.md` and set the ROADMAP.md rows and reservations listed in
+  TASK_PHASE_B.md §B6. Gate: `bash verify.sh`.

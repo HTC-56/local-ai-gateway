@@ -7,7 +7,7 @@ are the one permitted exception to append-only docs.
 |---|---|---|---|---|
 | 1 | One endpoint, many backends | PARTIAL | A | chat + models; single target, no failover yet |
 | 2 | Logical model routing | SHIPPED | A | config resolver + /v1/models |
-| 3 | Health + failover | NOT BUILT | — | |
+| 3 | Health + failover | PARTIAL | B | registry, probes + circuit shipped; /healthz + failover wiring in flight |
 | 4 | SSE streaming pass-through | NOT BUILT | — | returns 501 until its phase |
 | 5 | Egress attestation | PARTIAL | A | allowlist + counters; /attest endpoint pending |
 | 6 | Ops surface (/healthz, /metrics, ledger, auth) | PARTIAL | A | /healthz only; metrics, auth, ledger pending |
