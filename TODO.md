@@ -146,7 +146,7 @@ in TASK_PHASE_E.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   document `/events` in Ops. Extra gate: `bash scripts/readme-lint.sh`.
   Spec: TASK_PHASE_E.md §E4.
 
-- [ ] §E5 — `docs/PROCESS.md`: the loop story in one page plus a sanitized
+- [x] §E5 — `docs/PROCESS.md`: the loop story in one page plus a sanitized
   8-row excerpt of `loop-ledger.tsv`. Five parts are listed in
   TASK_PHASE_E.md §E5.
 
