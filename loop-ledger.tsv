@@ -12,3 +12,5 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T20:37:53	loop	qwen	commit	81	23025	31	7	335	- [ ] §B4 — `scripts/smoke-local.sh`, the local-only end-to-end plus forced
 2026-08-23T20:49:39	loop	qwen	commit	77	12377	31	6	706	- [ ] §B5 — `README.md`: add the 10-minute failover demo, rewrite Ops for the
 2026-08-23T20:52:16	loop	qwen	commit	72	9682	31	8	157	- [ ] §B6 — `bash verify.sh` green, then append the Phase B section to
+2026-08-23T21:10:24	plan	claude	commit	62	103496	40	13	521	plan next phase
+2026-08-23T21:14:46	loop	qwen	commit	67	13092	29	11	183	- [ ] §C1 — `GET /attest` in `src/routes/attest.ts`, mirroring
