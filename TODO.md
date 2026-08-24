@@ -80,7 +80,7 @@ section says otherwise.
   `src/routes/attest.ts`; register it in `src/app.ts`; test in
   `test/metrics-route.test.ts`. Spec: TASK_PHASE_C.md §C2.
 
-- [ ] §C3 — `src/routes/chat.ts` reports each attempt to `ctx.metrics` and
+- [x] §C3 — `src/routes/chat.ts` reports each attempt to `ctx.metrics` and
   `ctx.ledger`. New tests in `test/instrumentation.test.ts`; `chat.test.ts`
   and `failover.test.ts` stay green and unedited. Spec: TASK_PHASE_C.md §C3.
 
