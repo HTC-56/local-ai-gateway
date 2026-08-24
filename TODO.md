@@ -56,7 +56,7 @@ built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
   failover check, mirroring `scripts/readme-lint.sh`. Never wired into CI or
   verify.sh. Extra gate: `bash -n scripts/smoke-local.sh`. Spec: TASK_PHASE_B.md §B4.
 
-- [ ] §B5 — `README.md`: add the 10-minute failover demo, rewrite Ops for the
+- [x] §B5 — `README.md`: add the 10-minute failover demo, rewrite Ops for the
   live `/healthz`, fix the stale Limitations line. Extra gate:
   `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_B.md §B5.
 
