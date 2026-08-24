@@ -107,7 +107,7 @@ TASK_PHASE_D.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   answer with `pipeSseResponse` from `../stream.ts` in the success branch, and
   rewrite the one 501 test in `test/chat.test.ts`. Spec: TASK_PHASE_D.md §D1.
 
-- [ ] §D2 — Streaming route tests in `test/streaming.test.ts`, mirroring
+- [x] §D2 — Streaming route tests in `test/streaming.test.ts`, mirroring
   `test/chat.test.ts`. Five assertions are listed in TASK_PHASE_D.md §D2.
   No production code in this task.
 
