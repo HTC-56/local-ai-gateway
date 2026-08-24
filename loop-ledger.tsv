@@ -23,3 +23,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T21:56:21	loop	qwen	commit	92	18384	37	7	753	- [ ] §D2 — Streaming route tests in `test/streaming.test.ts`, mirroring
 2026-08-23T22:06:48	loop	qwen	commit	86	19156	34	4	627	- [ ] §D3 — Streaming failover tests in `test/streaming-failover.test.ts`,
 2026-08-23T22:08:59	loop	qwen	commit	78	13673	29	5	131	- [ ] §D4 — `README.md`: add a Streaming section with a `curl -N` example and
+2026-08-23T22:11:23	loop	qwen	commit	88	11024	34	7	144	- [ ] §D5 — `bash verify.sh` green, then append the Phase D section to
