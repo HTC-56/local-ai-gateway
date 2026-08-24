@@ -57,9 +57,9 @@ Prove the failover path with two model servers on documentation addresses.
    ```yaml
    backends:
      - name: box-a
-       url: http://192.0.2.1:11434
+       baseUrl: http://192.0.2.1:11434/v1
      - name: box-b
-       url: http://192.0.2.2:11434
+       baseUrl: http://192.0.2.2:11434/v1
 
    models:
      fast:
@@ -131,20 +131,45 @@ Configure probing with the `health` block in `gateway.yaml`:
 - `generationProbe` — send a 1-token request to the model endpoint so "healthy"
   means "can answer", not just "is listening" (default `false`).
 
+`GET /attest` returns the boot-bound egress allowlist (sorted `host:port`
+strings derived from `backends`), the `allowed` and `refused` counters,
+refusals per destination, and each backend's `{ name, destination }`. The
+allowlist is set once at boot from the config and does not change at runtime;
+the refusal path is proven by the test suite (`pnpm test`), not by a runtime
+switch.
+
+`GET /metrics` returns Prometheus exposition text (`text/plain`) with these
+metrics: `gateway_requests_total` (per model and outcome),
+`gateway_upstream_latency_ms` (per-backend histogram),
+`gateway_failovers_total` (per model and backend),
+`gateway_egress_allowed_total`, `gateway_egress_refused_total`, and
+`gateway_backend_up` (per backend gauge).
+
+**The ledger** writes one JSON object per line to the file at `ledger.path`,
+recording `request`, `failover`, and `egress_refused` events. `path: null`
+(the default) keeps an in-memory tail only. `redact: true` drops the
+body-derived `detail` field; request and response bodies are never written.
+
+**Auth** — set `auth.token` to a static bearer token string. Every endpoint
+except `/healthz` and `/` requires `Authorization: Bearer <token>`.
+
+```bash
+curl -H 'Authorization: Bearer my-token' http://localhost:8080/v1/models
+```
+
 Run `bash scripts/smoke-local.sh` for a local-only end-to-end smoke test that
 starts two mock upstreams, sends a chat request, forces failover, and checks
 healthz — never run in CI.
 
-`/attest`, `/metrics`, the ledger, and the dashboard are planned for later
-phases.
+The dashboard is a later phase.
 
 ## Limitations
 
 - No TLS — front the gateway with caddy or nginx if you need HTTPS.
+- `/healthz` is deliberately unauthenticated so a load balancer can probe it.
 - Failover walks the priority list at request start, skipping backends whose
   circuit is open; there is still no queueing, no load balancing and no
   mid-stream failover.
-- One static bearer token — per-client API keys are a later phase.
 
 ## Development
 

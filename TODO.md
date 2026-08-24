@@ -88,7 +88,7 @@ section says otherwise.
   registered in `src/app.ts`; `/healthz` and `/` stay open; test in
   `test/auth.test.ts`. Spec: TASK_PHASE_C.md §C4.
 
-- [ ] §C5 — `README.md`: fix the failover demo's YAML keys, document
+- [x] §C5 — `README.md`: fix the failover demo's YAML keys, document
   `/attest`, `/metrics`, the ledger and auth in Ops. Extra gate:
   `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_C.md §C5.
 
