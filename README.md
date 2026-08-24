@@ -111,6 +111,23 @@ mid-stream the client's stream ends early and the client retries; the gateway wi
 not splice a second backend into a stream in progress, because that would mean
 handing the client tokens the first backend never produced.
 
+## Dashboard
+
+Open `http://localhost:8080/` in a browser. The page is a single self-contained
+HTML file served by the gateway — no framework, no build step, and it makes no
+external requests of its own, which is the point. It polls `/healthz`, `/attest`,
+`/metrics` and `/events` every 3 seconds and shows: the egress attestation panel
+front and centre (allowlist, allowed and refused counters, refusals per
+destination), throughput counters, one fleet card per backend with state, latency
+trend and the models routed to it, and an event feed of requests, failovers and
+refused egress. If `auth.token` is set, paste the token into the field in the
+page header — `/` and `/healthz` are open, every other endpoint needs it.
+
+**Hero screenshot** — the README's hero image is a real capture, not a committed
+placeholder. Run the failover demo, open the dashboard while one backend is down,
+save the capture as `docs/dashboard.png`, and replace the link below. Do not add a
+markdown image tag pointing at a file that does not exist.
+
 ## Configuration
 
 Copy `deploy/gateway.example.yaml` to `gateway.yaml` and edit:
@@ -177,7 +194,11 @@ Run `bash scripts/smoke-local.sh` for a local-only end-to-end smoke test that
 starts two mock upstreams, sends a chat request, forces failover, and checks
 healthz — never run in CI.
 
-The dashboard is a later phase.
+See the **Dashboard** section above.
+
+`GET /events` returns `{ events: [...] }` from the in-memory ledger tail,
+oldest first, `?limit=N` (default 50, max 200). It needs the bearer token like
+every other endpoint.
 
 ## Limitations
 

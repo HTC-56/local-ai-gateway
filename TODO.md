@@ -142,7 +142,7 @@ in TASK_PHASE_E.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   `test/dashboard-egress.test.ts`, mirroring `test/root.test.ts`. Five
   assertions are listed in TASK_PHASE_E.md §E3. No production code.
 
-- [ ] §E4 — `README.md`: add a Dashboard section, a hero-screenshot note, and
+- [x] §E4 — `README.md`: add a Dashboard section, a hero-screenshot note, and
   document `/events` in Ops. Extra gate: `bash scripts/readme-lint.sh`.
   Spec: TASK_PHASE_E.md §E4.
 
