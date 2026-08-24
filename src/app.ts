@@ -6,6 +6,7 @@
  * `src/routes/healthz.ts`, import its `register<Name>` here, and call it below.
  */
 import Fastify, { type FastifyInstance } from 'fastify';
+import { registerAuth } from './auth.ts';
 import type { Config } from './config.ts';
 import type { GatewayContext } from './context.ts';
 import { createEgressGuard, type EgressGuard } from './egress.ts';
@@ -55,6 +56,7 @@ export function createApp(config: Config, options: CreateAppOptions = {}): Fasti
 
   const app = Fastify({ logger: options.logger ?? false });
 
+  registerAuth(app, ctx);
   registerHealthz(app, ctx);
   registerAttest(app, ctx);
   registerMetrics(app, ctx);

@@ -84,7 +84,7 @@ section says otherwise.
   `ctx.ledger`. New tests in `test/instrumentation.test.ts`; `chat.test.ts`
   and `failover.test.ts` stay green and unedited. Spec: TASK_PHASE_C.md §C3.
 
-- [ ] §C4 — Static bearer token auth in `src/auth.ts`, an `onRequest` hook
+- [x] §C4 — Static bearer token auth in `src/auth.ts`, an `onRequest` hook
   registered in `src/app.ts`; `/healthz` and `/` stay open; test in
   `test/auth.test.ts`. Spec: TASK_PHASE_C.md §C4.
 
