@@ -5,13 +5,13 @@ are the one permitted exception to append-only docs.
 
 | # | Feature (SPEC.md) | Status | Phase | Note |
 |---|---|---|---|---|
-| 1 | One endpoint, many backends | PARTIAL | A | chat + models; single target, no failover yet |
+| 1 | One endpoint, many backends | SHIPPED | B | chat + models across N backends, with failover |
 | 2 | Logical model routing | SHIPPED | A | config resolver + /v1/models |
-| 3 | Health + failover | PARTIAL | B | registry, probes + circuit shipped; /healthz + failover wiring in flight |
+| 3 | Health + failover | SHIPPED | B | probes, circuit + cooldown, priority-list failover |
 | 4 | SSE streaming pass-through | NOT BUILT | — | returns 501 until its phase |
 | 5 | Egress attestation | PARTIAL | A | allowlist + counters; /attest endpoint pending |
-| 6 | Ops surface (/healthz, /metrics, ledger, auth) | PARTIAL | A | /healthz only; metrics, auth, ledger pending |
-| 7 | Deploy-grade packaging (config, unit, README, CI) | PARTIAL | A | config, unit, CI, README; smoke script pending |
+| 6 | Ops surface (/healthz, /metrics, ledger, auth) | PARTIAL | B | /healthz live; metrics, auth, ledger pending |
+| 7 | Deploy-grade packaging (config, unit, README, CI) | PARTIAL | B | config, unit, CI, README + failover demo, smoke script; hero screenshot waits on the dashboard |
 | 8 | Dashboard | NOT BUILT | — | |
 | — | docs/PROCESS.md (the loop story) | NOT BUILT | — | written near the end, when there is a ledger to excerpt |
 

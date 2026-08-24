@@ -60,6 +60,6 @@ built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
   live `/healthz`, fix the stale Limitations line. Extra gate:
   `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_B.md §B5.
 
-- [ ] §B6 — `bash verify.sh` green, then append the Phase B section to
+- [x] §B6 — `bash verify.sh` green, then append the Phase B section to
   `STATUS.md` and set the ROADMAP.md rows and reservations listed in
   TASK_PHASE_B.md §B6. Gate: `bash verify.sh`.
