@@ -1,0 +1,26 @@
+# Example systemd unit. Copy to /etc/systemd/system/, edit User/paths, then:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now local-ai-gateway
+[Unit]
+Description=local-ai-gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gateway
+WorkingDirectory=/opt/local-ai-gateway
+Environment=NODE_ENV=production
+Environment=GATEWAY_CONFIG=/etc/local-ai-gateway/gateway.yaml
+ExecStart=/usr/bin/node src/main.ts
+Restart=on-failure
+RestartSec=2
+
+# The gateway needs no write access outside its ledger directory.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/local-ai-gateway
+
+[Install]
+WantedBy=multi-user.target
