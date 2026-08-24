@@ -7,3 +7,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T19:50:47	loop	qwen	commit	95	13899	38	6	126	- [ ] §A10 — `bash verify.sh` green, then append the Phase A section to
 2026-08-23T20:05:51	plan	claude	commit	56	107240	33	0	516	plan next phase
 2026-08-23T20:16:53	loop	qwen	commit	47	7696	18	4	550	- [ ] §B1 — `/healthz` serves live state from `ctx.health.snapshot()` in
+2026-08-23T20:19:23	loop	qwen	commit	79	13068	30	6	150	- [ ] §B2 — Failover in `src/routes/chat.ts`: walk every resolved target, skip

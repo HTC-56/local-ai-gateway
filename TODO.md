@@ -44,7 +44,7 @@ built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
   `src/routes/healthz.ts`, plus an `ok`/`degraded` summary; update and extend
   `test/app.test.ts`. Spec: TASK_PHASE_B.md §B1.
 
-- [ ] §B2 — Failover in `src/routes/chat.ts`: walk every resolved target, skip
+- [x] §B2 — Failover in `src/routes/chat.ts`: walk every resolved target, skip
   backends whose circuit is open, report each result to `ctx.health`. The four
   tests in `test/chat.test.ts` stay green and unedited. Spec: TASK_PHASE_B.md §B2.
 
