@@ -1,5 +1,7 @@
 # local-ai-gateway
 
+[![ci](https://github.com/HTC-56/local-ai-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/HTC-56/local-ai-gateway/actions/workflows/ci.yml)
+
 One OpenAI-compatible HTTP endpoint fronting several local model servers on your
 LAN. Logical model names in the config resolve to physical backends at request
 time, and the gateway enforces a boot-bound egress allowlist so no other outbound
