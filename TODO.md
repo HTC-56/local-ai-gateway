@@ -130,7 +130,7 @@ The page (`src/dashboard.html`, `src/dashboard.ts` with its 11 tests, and the
 in TASK_PHASE_E.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
 `bash scripts/scrub-check.sh`, unless its section says otherwise.
 
-- [ ] §E1 — `GET /events` in `src/routes/events.ts`, mirroring
+- [x] §E1 — `GET /events` in `src/routes/events.ts`, mirroring
   `src/routes/attest.ts`; register it in `src/app.ts`; test in
   `test/events.test.ts`. Spec: TASK_PHASE_E.md §E1.
 

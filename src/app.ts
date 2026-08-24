@@ -18,6 +18,7 @@ import { registerHealthz } from './routes/healthz.ts';
 import { registerMetrics } from './routes/metrics.ts';
 import { registerModels } from './routes/models.ts';
 import { registerChat } from './routes/chat.ts';
+import { registerEvents } from './routes/events.ts';
 
 export type CreateAppOptions = {
   /** Override the boot-bound guard; tests use this to inject a fetch spy. */
@@ -62,6 +63,7 @@ export function createApp(config: Config, options: CreateAppOptions = {}): Fasti
   registerMetrics(app, ctx);
   registerModels(app, ctx);
   registerChat(app, ctx);
+  registerEvents(app, ctx);
 
   // Closing the app must leave no probe timer and no open file behind.
   app.addHook('onClose', async () => {
