@@ -24,7 +24,7 @@ try {
   throw error;
 }
 
-const app = createApp(config, { logger: true });
+const app = createApp(config, { logger: true, probe: true });
 
 try {
   await app.listen({ host: config.listen.host, port: config.listen.port });

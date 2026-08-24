@@ -75,6 +75,12 @@ export const configSchema = z
         intervalMs: z.number().int().positive().default(10_000),
         timeoutMs: z.number().int().positive().default(2_000),
         cooldownMs: z.number().int().positive().default(30_000),
+        /**
+         * When true a healthy models-list probe is followed by a 1-token
+         * generation probe — proof the backend can actually answer, not just
+         * that it is listening. Off by default: it costs a token per tick.
+         */
+        generationProbe: z.boolean().default(false),
       })
       .default({}),
     backends: z.array(backendSchema).min(1, 'at least one backend is required'),

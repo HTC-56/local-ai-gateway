@@ -5,8 +5,11 @@
  */
 import type { Config } from './config.ts';
 import type { EgressGuard } from './egress.ts';
+import type { HealthRegistry } from './health.ts';
 
 export type GatewayContext = {
   config: Config;
   egress: EgressGuard;
+  /** Live per-backend state; routes ask `isUsable` before sending. */
+  health: HealthRegistry;
 };

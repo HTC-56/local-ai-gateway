@@ -18,9 +18,14 @@ ledger:
   redact: false
 
 health:
+  # How often each backend is probed, how long a probe may take, and how long
+  # a failed backend is skipped before its circuit half-opens for one retry.
   intervalMs: 10000
   timeoutMs: 2000
   cooldownMs: 30000
+  # true => follow the models-list probe with a 1-token generation request, so
+  # "healthy" means "can answer", not just "is listening". Costs a token a tick.
+  generationProbe: false
 
 # Every upstream this gateway may talk to. This list IS the egress allowlist:
 # at boot the gateway binds `host:port` for each entry and refuses every other
