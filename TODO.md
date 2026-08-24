@@ -52,7 +52,7 @@ built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
   `test/chat.test.ts`. Five assertions are listed in TASK_PHASE_B.md §B3.
   No production code in this task.
 
-- [ ] §B4 — `scripts/smoke-local.sh`, the local-only end-to-end plus forced
+- [x] §B4 — `scripts/smoke-local.sh`, the local-only end-to-end plus forced
   failover check, mirroring `scripts/readme-lint.sh`. Never wired into CI or
   verify.sh. Extra gate: `bash -n scripts/smoke-local.sh`. Spec: TASK_PHASE_B.md §B4.
 
