@@ -29,6 +29,6 @@ section says otherwise.
 - [x] §A9 — `README.md` with the 5-minute quickstart. Required sections and
   hard rules in TASK_PHASE_A.md §A9. Extra gate: `bash scripts/readme-lint.sh`.
 
-- [ ] §A10 — `bash verify.sh` green, then append the Phase A section to
+- [x] §A10 — `bash verify.sh` green, then append the Phase A section to
   `STATUS.md` and set the ROADMAP.md rows listed in TASK_PHASE_A.md §A10.
   Gate: `bash verify.sh`.
