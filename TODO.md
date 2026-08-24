@@ -26,7 +26,7 @@ section says otherwise.
   mirroring `src/routes/models.ts`; register it in `src/app.ts`; test in
   `test/chat.test.ts` against the mock upstream. Spec: TASK_PHASE_A.md §A8.
 
-- [ ] §A9 — `README.md` with the 5-minute quickstart. Required sections and
+- [x] §A9 — `README.md` with the 5-minute quickstart. Required sections and
   hard rules in TASK_PHASE_A.md §A9. Extra gate: `bash scripts/readme-lint.sh`.
 
 - [ ] §A10 — `bash verify.sh` green, then append the Phase A section to
