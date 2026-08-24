@@ -95,3 +95,30 @@ section says otherwise.
 - [x] §C6 — `bash verify.sh` green, then append the Phase C section to
   `STATUS.md` and set the ROADMAP.md rows and reservations listed in
   TASK_PHASE_C.md §C6. Gate: `bash verify.sh`.
+
+## Phase D: SSE streaming pass-through — see TASK_PHASE_D.md
+
+The engine (`src/stream.ts` with its 7 tests, the streaming mock upstream, the
+`stream` field on `LedgerEvent`) is already committed — see "Already built" in
+TASK_PHASE_D.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
+`bash scripts/scrub-check.sh`, unless its section says otherwise.
+
+- [ ] §D1 — `src/routes/chat.ts` streams: drop the 501 block, pipe the upstream
+  answer with `pipeSseResponse` from `../stream.ts` in the success branch, and
+  rewrite the one 501 test in `test/chat.test.ts`. Spec: TASK_PHASE_D.md §D1.
+
+- [ ] §D2 — Streaming route tests in `test/streaming.test.ts`, mirroring
+  `test/chat.test.ts`. Five assertions are listed in TASK_PHASE_D.md §D2.
+  No production code in this task.
+
+- [ ] §D3 — Streaming failover tests in `test/streaming-failover.test.ts`,
+  mirroring `test/failover.test.ts`. Four assertions are listed in
+  TASK_PHASE_D.md §D3. No production code in this task.
+
+- [ ] §D4 — `README.md`: add a Streaming section with a `curl -N` example and
+  the no-mid-stream-splice limitation; fix the stale Limitations clause. Extra
+  gate: `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_D.md §D4.
+
+- [ ] §D5 — `bash verify.sh` green, then append the Phase D section to
+  `STATUS.md` and set the ROADMAP.md row and reservation listed in
+  TASK_PHASE_D.md §D5. Gate: `bash verify.sh`.

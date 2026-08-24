@@ -8,7 +8,7 @@ are the one permitted exception to append-only docs.
 | 1 | One endpoint, many backends | SHIPPED | B | chat + models across N backends, with failover |
 | 2 | Logical model routing | SHIPPED | A | config resolver + /v1/models |
 | 3 | Health + failover | SHIPPED | B | probes, circuit + cooldown, priority-list failover |
-| 4 | SSE streaming pass-through | NOT BUILT | — | returns 501 until its phase |
+| 4 | SSE streaming pass-through | IN FLIGHT | D | engine `src/stream.ts` shipped; route, tests and docs are Phase D tasks |
 | 5 | Egress attestation | SHIPPED | C | allowlist, counters, /attest; refusal path proven in tests |
 | 6 | Ops surface (/healthz, /metrics, ledger, auth) | SHIPPED | C | /healthz, /metrics, /attest, bearer auth, JSONL ledger |
 | 7 | Deploy-grade packaging (config, unit, README, CI) | PARTIAL | B | config, unit, CI, README + failover demo, smoke script; hero screenshot waits on the dashboard |
