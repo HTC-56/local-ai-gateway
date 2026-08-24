@@ -63,3 +63,16 @@ client's stream early with no splice.
 What is deliberately not built yet: the dashboard and `docs/PROCESS.md`.
 
 Gate state: `verify.sh` all green as of Phase D.
+
+## Phase E — the dashboard and the process log
+
+`GET /` serves the self-contained dashboard from `src/dashboard.html`;
+`GET /events` serves the ledger tail as JSON. The page polls `/healthz`,
+`/attest`, `/metrics` and `/events` and makes no external request, which
+`test/dashboard-egress.test.ts` gates. `docs/PROCESS.md` tells the loop
+story — how this repo was built in a series of small, verifiable phases.
+
+What is deliberately not built yet: the README's hero screenshot, a capture
+a human takes.
+
+Gate state: `verify.sh` all green as of Phase E.

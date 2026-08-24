@@ -150,6 +150,6 @@ in TASK_PHASE_E.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   8-row excerpt of `loop-ledger.tsv`. Five parts are listed in
   TASK_PHASE_E.md §E5.
 
-- [ ] §E6 — `bash verify.sh` green, then append the Phase E section to
+- [x] §E6 — `bash verify.sh` green, then append the Phase E section to
   `STATUS.md` and set the ROADMAP.md rows and reservations listed in
   TASK_PHASE_E.md §E6. Gate: `bash verify.sh`.

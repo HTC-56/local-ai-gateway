@@ -10,10 +10,10 @@ are the one permitted exception to append-only docs.
 | 3 | Health + failover | SHIPPED | B | probes, circuit + cooldown, priority-list failover |
 | 4 | SSE streaming pass-through | SHIPPED | D | chunk-for-chunk pass-through; failover at request start only |
 | 5 | Egress attestation | SHIPPED | C | allowlist, counters, /attest; refusal path proven in tests |
-| 6 | Ops surface (/healthz, /metrics, ledger, auth) | SHIPPED | C | /healthz, /metrics, /attest, bearer auth, JSONL ledger |
-| 7 | Deploy-grade packaging (config, unit, README, CI) | PARTIAL | B | config, unit, CI, README + failover demo, smoke script; hero screenshot waits on the dashboard |
-| 8 | Dashboard | PARTIAL | E | page + self-containment scanner committed; `GET /` and the feed land in Phase E |
-| — | docs/PROCESS.md (the loop story) | NOT BUILT | E | queued as Phase E §E5 — there is a ledger to excerpt now |
+| 6 | Ops surface (/healthz, /metrics, ledger, auth) | SHIPPED | C | /healthz, /metrics, /attest, /events, bearer auth, JSONL ledger |
+| 7 | Deploy-grade packaging (config, unit, README, CI) | SHIPPED | E | config, unit, CI, README, smoke script; hero screenshot is a human capture |
+| 8 | Dashboard | SHIPPED | E | self-contained page at GET /, polls healthz/attest/metrics/events |
+| — | docs/PROCESS.md (the loop story) | SHIPPED | E | the loop story plus a sanitized ledger excerpt |
 
 When every row reads SHIPPED and verify.sh is green, the project is done — the
 planning lane declares PROJECT SPEC COMPLETE rather than inventing scope.
