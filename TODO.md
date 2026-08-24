@@ -48,7 +48,7 @@ built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
   backends whose circuit is open, report each result to `ctx.health`. The four
   tests in `test/chat.test.ts` stay green and unedited. Spec: TASK_PHASE_B.md §B2.
 
-- [ ] §B3 — Failover tests in `test/failover.test.ts`, mirroring
+- [x] §B3 — Failover tests in `test/failover.test.ts`, mirroring
   `test/chat.test.ts`. Five assertions are listed in TASK_PHASE_B.md §B3.
   No production code in this task.
 
