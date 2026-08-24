@@ -1,0 +1,44 @@
+# local-ai-gateway — example configuration.
+#
+# Copy to ./gateway.yaml and edit. Addresses below use the documentation
+# ranges (RFC 5737); replace them with your own LAN addresses.
+
+listen:
+  host: 127.0.0.1
+  port: 8080
+
+auth:
+  # Static bearer token clients must send as `Authorization: Bearer <token>`.
+  # null disables auth — development only.
+  token: null
+
+ledger:
+  path: ./ledger.jsonl
+  # true => routing metadata only, never request or response bodies.
+  redact: false
+
+health:
+  intervalMs: 10000
+  timeoutMs: 2000
+  cooldownMs: 30000
+
+# Every upstream this gateway may talk to. This list IS the egress allowlist:
+# at boot the gateway binds `host:port` for each entry and refuses every other
+# outbound destination.
+backends:
+  - name: box-a
+    baseUrl: http://192.0.2.10:11434/v1
+  - name: box-b
+    baseUrl: http://192.0.2.20:11434/v1
+
+# Logical model -> priority-ordered targets. Clients ask for `fast`; the
+# gateway tries box-a first and falls over to box-b.
+models:
+  fast:
+    - backend: box-a
+      model: llama3.2:3b
+    - backend: box-b
+      model: llama3.2:3b
+  coder:
+    - backend: box-b
+      model: qwen2.5-coder:7b
