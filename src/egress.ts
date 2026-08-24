@@ -68,10 +68,15 @@ export function allowlistFor(config: Config): string[] {
  *
  * `fetchImpl` exists so tests can assert that a refused request never reaches
  * the network; production always uses the global `fetch`.
+ *
+ * `onRefusal` is the hook the gateway uses to write a refusal into the
+ * ledger. It fires after the counters move and before the throw, and it can
+ * never break the refusal path: a hook that throws is swallowed.
  */
 export function createEgressGuard(
   config: Config,
   fetchImpl: typeof globalThis.fetch = globalThis.fetch,
+  onRefusal?: (destination: string) => void,
 ): EgressGuard {
   const allowlist = allowlistFor(config);
   const allowed = new Set(allowlist);
@@ -110,6 +115,13 @@ export function createEgressGuard(
         const destination = destinationFor(input);
         refusedCount += 1;
         refusedByDestination.set(destination, (refusedByDestination.get(destination) ?? 0) + 1);
+        if (onRefusal) {
+          try {
+            onRefusal(destination);
+          } catch {
+            // Recording a refusal must never turn into a second failure.
+          }
+        }
         throw new EgressRefusedError(destination);
       }
       allowedCount += 1;

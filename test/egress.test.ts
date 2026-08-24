@@ -95,4 +95,29 @@ describe('createEgressGuard', () => {
       /198\.51\.100\.5:443/,
     );
   });
+
+  it('calls the onRefusal hook with the destination', async () => {
+    const seen: string[] = [];
+    const guard = createEgressGuard(config(), okFetch(), (destination) => {
+      seen.push(destination);
+    });
+
+    await expect(guard.fetch('https://198.51.100.5/v1/models')).rejects.toBeInstanceOf(
+      EgressRefusedError,
+    );
+    await guard.fetch('http://192.0.2.10:11434/v1/models');
+
+    expect(seen).toEqual(['198.51.100.5:443']);
+  });
+
+  it('still refuses when the onRefusal hook throws', async () => {
+    const guard = createEgressGuard(config(), okFetch(), () => {
+      throw new Error('ledger exploded');
+    });
+
+    await expect(guard.fetch('https://198.51.100.5/v1/models')).rejects.toBeInstanceOf(
+      EgressRefusedError,
+    );
+    expect(guard.snapshot().refused).toBe(1);
+  });
 });

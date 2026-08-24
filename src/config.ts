@@ -65,7 +65,12 @@ export const configSchema = z
       .default({}),
     ledger: z
       .object({
-        path: z.string().min(1).default('./ledger.jsonl'),
+        /**
+         * JSONL file the request ledger appends to. `null` (the default)
+         * keeps the in-memory ring the dashboard reads and writes no file —
+         * a privacy gateway does not persist a request log unasked.
+         */
+        path: z.string().min(1).nullable().default(null),
         /** When true the ledger records routing metadata only, never bodies. */
         redact: z.boolean().default(false),
       })

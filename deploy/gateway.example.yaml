@@ -13,8 +13,12 @@ auth:
   token: null
 
 ledger:
+  # JSONL file every request, failover and refused-egress event is appended
+  # to. null (the default) keeps only the in-memory tail the dashboard reads
+  # and writes nothing to disk.
   path: ./ledger.jsonl
-  # true => routing metadata only, never request or response bodies.
+  # true => routing metadata only. The ledger never records a request or
+  # response body; this drops the body-*derived* summary field too.
   redact: false
 
 health:

@@ -17,6 +17,7 @@ describe('parseConfig defaults', () => {
     expect(config.listen.host).toBe('127.0.0.1');
     expect(config.listen.port).toBe(8080);
     expect(config.auth.token).toBeNull();
+    expect(config.ledger.path).toBeNull();
     expect(config.ledger.redact).toBe(false);
     expect(config.health.intervalMs).toBe(10000);
   });
