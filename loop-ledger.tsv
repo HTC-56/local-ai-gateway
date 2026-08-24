@@ -3,3 +3,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T19:31:11	loop	qwen	commit	54	8333	22	5	237	- [ ] §A6 — `GET /v1/models` in `src/routes/models.ts`, mirroring
 2026-08-23T19:34:25	loop	qwen	commit	143	21623	58	12	193	- [ ] §A7 — Config loader tests in `test/config.test.ts`, mirroring
 2026-08-23T19:37:53	loop	qwen	commit	195	27695	80	18	207	- [ ] §A8 — Non-streaming `POST /v1/chat/completions` in `src/routes/chat.ts`,
+2026-08-23T19:48:41	loop	qwen	commit	155	20012	63	13	648	- [ ] §A9 — `README.md` with the 5-minute quickstart. Required sections and
