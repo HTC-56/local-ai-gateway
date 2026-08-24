@@ -138,7 +138,7 @@ in TASK_PHASE_E.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   `src/routes/metrics.ts`; register it in `src/app.ts`; test in
   `test/root.test.ts`. Spec: TASK_PHASE_E.md §E2.
 
-- [ ] §E3 — Zero-external-request tests for the served page in
+- [x] §E3 — Zero-external-request tests for the served page in
   `test/dashboard-egress.test.ts`, mirroring `test/root.test.ts`. Five
   assertions are listed in TASK_PHASE_E.md §E3. No production code.
 
