@@ -14,6 +14,7 @@ import { createLedger, type Ledger } from './ledger.ts';
 import { createMetrics, type Metrics } from './metrics.ts';
 import { registerAttest } from './routes/attest.ts';
 import { registerHealthz } from './routes/healthz.ts';
+import { registerMetrics } from './routes/metrics.ts';
 import { registerModels } from './routes/models.ts';
 import { registerChat } from './routes/chat.ts';
 
@@ -56,6 +57,7 @@ export function createApp(config: Config, options: CreateAppOptions = {}): Fasti
 
   registerHealthz(app, ctx);
   registerAttest(app, ctx);
+  registerMetrics(app, ctx);
   registerModels(app, ctx);
   registerChat(app, ctx);
 

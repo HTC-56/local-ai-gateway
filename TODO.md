@@ -76,7 +76,7 @@ section says otherwise.
   `src/routes/healthz.ts`; register it in `src/app.ts`; test in
   `test/attest.test.ts`. Spec: TASK_PHASE_C.md §C1.
 
-- [ ] §C2 — `GET /metrics` in `src/routes/metrics.ts`, mirroring
+- [x] §C2 — `GET /metrics` in `src/routes/metrics.ts`, mirroring
   `src/routes/attest.ts`; register it in `src/app.ts`; test in
   `test/metrics-route.test.ts`. Spec: TASK_PHASE_C.md §C2.
 
