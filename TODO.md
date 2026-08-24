@@ -18,7 +18,7 @@ section says otherwise.
   `src/routes/healthz.ts`; register it in `src/app.ts`; test in
   `test/models.test.ts`. Spec: TASK_PHASE_A.md §A6.
 
-- [ ] §A7 — Config loader tests in `test/config.test.ts`, mirroring
+- [x] §A7 — Config loader tests in `test/config.test.ts`, mirroring
   `test/egress.test.ts`. Six assertions are listed in TASK_PHASE_A.md §A7.
   No production code in this task.
 
