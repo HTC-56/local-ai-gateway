@@ -123,10 +123,11 @@ trend and the models routed to it, and an event feed of requests, failovers and
 refused egress. If `auth.token` is set, paste the token into the field in the
 page header — `/` and `/healthz` are open, every other endpoint needs it.
 
-**Hero screenshot** — the README's hero image is a real capture, not a committed
-placeholder. Run the failover demo, open the dashboard while one backend is down,
-save the capture as `docs/dashboard.png`, and replace the link below. Do not add a
-markdown image tag pointing at a file that does not exist.
+![Dashboard: fleet degraded, one backend down, egress attestation front and center](docs/dashboard.png)
+
+*A real capture: the failover demo mid-flight — one backend down and marked
+unhealthy, requests landing on the survivor, the egress allowlist bound and
+counting.*
 
 ## Configuration
 
