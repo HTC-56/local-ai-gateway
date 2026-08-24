@@ -111,7 +111,7 @@ TASK_PHASE_D.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   `test/chat.test.ts`. Five assertions are listed in TASK_PHASE_D.md §D2.
   No production code in this task.
 
-- [ ] §D3 — Streaming failover tests in `test/streaming-failover.test.ts`,
+- [x] §D3 — Streaming failover tests in `test/streaming-failover.test.ts`,
   mirroring `test/failover.test.ts`. Four assertions are listed in
   TASK_PHASE_D.md §D3. No production code in this task.
 
