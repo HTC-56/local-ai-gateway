@@ -1,32 +1,19 @@
 /**
- * `GET /healthz` — per-backend state (SPEC.md feature 6).
+ * `GET /healthz` — per-backend state from the live health registry.
  *
- * This is also the pattern file for every other route: one `register<Name>`
- * function taking (app, ctx), one `app.<verb>` call, plain objects returned
- * from an async handler.
- *
- * Phase A reports every backend as `unknown`; the health prober that fills in
- * real states and probe timestamps lands in a later phase.
+ * Phase B: replaces the Phase A placeholder (every backend `unknown`) with
+ * real data from `ctx.health.snapshot()`.
  */
 import type { FastifyInstance } from 'fastify';
 import type { GatewayContext } from '../context.ts';
+import type { BackendHealth } from '../health.ts';
 
-export type BackendHealth = {
-  name: string;
-  baseUrl: string;
-  state: 'unknown' | 'healthy' | 'unhealthy';
-  lastProbe: string | null;
-};
+export type { BackendHealth } from '../health.ts';
 
 export function registerHealthz(app: FastifyInstance, ctx: GatewayContext): void {
   app.get('/healthz', async () => {
-    const backends: BackendHealth[] = ctx.config.backends.map((backend) => ({
-      name: backend.name,
-      baseUrl: backend.baseUrl,
-      state: 'unknown',
-      lastProbe: null,
-    }));
-
-    return { status: 'ok', backends };
+    const backends = ctx.health.snapshot();
+    const status = backends.some((b) => b.state === 'unhealthy') ? 'degraded' : 'ok';
+    return { status, backends };
   });
 }

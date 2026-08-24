@@ -40,7 +40,7 @@ The engine (`src/health.ts`, its 14 tests, the `ctx.health` wiring and the
 built" in TASK_PHASE_B.md. Gate for every task below: `pnpm typecheck` +
 `pnpm test` + `bash scripts/scrub-check.sh`, unless its section says otherwise.
 
-- [ ] §B1 — `/healthz` serves live state from `ctx.health.snapshot()` in
+- [x] §B1 — `/healthz` serves live state from `ctx.health.snapshot()` in
   `src/routes/healthz.ts`, plus an `ok`/`degraded` summary; update and extend
   `test/app.test.ts`. Spec: TASK_PHASE_B.md §B1.
 
