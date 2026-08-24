@@ -1,13 +1,13 @@
 /**
- * `POST /v1/chat/completions` — non-streaming chat completion proxy
- * (SPEC.md feature 1).
+ * `POST /v1/chat/completions` — non-streaming chat completion proxy with
+ * failover (TASK_PHASE_B.md §B2).
  *
  * Mirrors `src/routes/models.ts`: one `registerChat(app, ctx)` function,
  * one `app.post(...)` call, plain objects returned from an async handler.
  *
- * The logical model name from the request is resolved to a physical name
- * the upstream backend understands. Only the first target is used —
- * failover is a later phase.
+ * Walks every resolved target in priority order. Skips backends whose
+ * circuit is open (via `ctx.health.isUsable`). Reports each outcome to
+ * `ctx.health` so the fleet view stays live.
  */
 import type { FastifyInstance } from 'fastify';
 import type { GatewayContext } from '../context.ts';
@@ -53,29 +53,65 @@ export function registerChat(app: FastifyInstance, ctx: GatewayContext): void {
       });
     }
 
-    const target = targets[0]!;
-    const upstreamUrl = `${target.backend.baseUrl}/chat/completions`;
+    // Walk every target in priority order, skipping unusable backends.
+    let attempted = 0;
 
-    // Replace logical model with physical model for the upstream
-    const upstreamBody = { ...body, model: target.model };
+    for (const target of targets) {
+      // Skip backends with open circuits — never contact them.
+      if (!ctx.health.isUsable(target.backend.name)) {
+        continue;
+      }
 
-    try {
-      const response = await ctx.egress.fetch(upstreamUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(upstreamBody),
-      });
+      attempted++;
 
-      const responseBody = await response.json();
-      return reply.status(response.status).send(responseBody);
-    } catch (error) {
+      const upstreamUrl = `${target.backend.baseUrl}/chat/completions`;
+      const upstreamBody = { ...body, model: target.model };
+      const startTime = Date.now();
+
+      try {
+        const response = await ctx.egress.fetch(upstreamUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(upstreamBody),
+        });
+
+        const elapsed = Date.now() - startTime;
+
+        // Status < 500 is a real answer — return it immediately.
+        if (response.status < 500) {
+          ctx.health.reportSuccess(target.backend.name, elapsed);
+          const responseBody = await response.json();
+          return reply.status(response.status).send(responseBody);
+        }
+
+        // Status >= 500 is a backend failure — report and continue.
+        ctx.health.reportFailure(
+          target.backend.name,
+          new Error(`HTTP ${response.status}`),
+        );
+      } catch (error) {
+        // Connection error or other failure — report and continue.
+        ctx.health.reportFailure(target.backend.name, error);
+      }
+    }
+
+    // Nothing succeeded.
+    if (attempted > 0) {
       return reply.status(502).send({
         error: {
-          message: (error as Error).message,
+          message: 'All upstream targets failed',
           type: 'upstream_unavailable',
           code: 'upstream_unavailable',
         },
       });
     }
+
+    return reply.status(503).send({
+      error: {
+        message: 'No healthy backend available',
+        type: 'unavailable',
+        code: 'no_healthy_backend',
+      },
+    });
   });
 }
