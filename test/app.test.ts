@@ -27,6 +27,7 @@ describe('GET /healthz', () => {
             latencyMs: null,
             consecutiveFailures: 0,
             lastError: null,
+            models: ['mock-model'],
           },
         ],
       });
@@ -55,6 +56,7 @@ describe('GET /healthz', () => {
       expect(backend.state).toBe('unhealthy');
       expect(backend.consecutiveFailures).toBe(1);
       expect(backend.lastError).toContain('ECONNREFUSED');
+      expect(backend.models).toEqual(['mock-model']);
     } finally {
       await app.close();
     }

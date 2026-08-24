@@ -183,6 +183,21 @@ export function listLogicalModels(config: Config): string[] {
 }
 
 /**
+ * The physical models routed to one backend, sorted and deduped — what a
+ * fleet card on the dashboard lists under a backend's name. A backend nothing
+ * routes to gets an empty array.
+ */
+export function modelsFor(config: Config, backendName: string): string[] {
+  const models = new Set<string>();
+  for (const targets of Object.values(config.models)) {
+    for (const target of targets) {
+      if (target.backend === backendName) models.add(target.model);
+    }
+  }
+  return [...models].sort();
+}
+
+/**
  * Resolve a logical model to its priority-ordered targets. Unknown logical
  * names resolve to an empty array; callers turn that into a 404.
  */
