@@ -22,7 +22,7 @@ section says otherwise.
   `test/egress.test.ts`. Six assertions are listed in TASK_PHASE_A.md §A7.
   No production code in this task.
 
-- [ ] §A8 — Non-streaming `POST /v1/chat/completions` in `src/routes/chat.ts`,
+- [x] §A8 — Non-streaming `POST /v1/chat/completions` in `src/routes/chat.ts`,
   mirroring `src/routes/models.ts`; register it in `src/app.ts`; test in
   `test/chat.test.ts` against the mock upstream. Spec: TASK_PHASE_A.md §A8.
 

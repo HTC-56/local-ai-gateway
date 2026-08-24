@@ -11,6 +11,7 @@ import type { GatewayContext } from './context.ts';
 import { createEgressGuard, type EgressGuard } from './egress.ts';
 import { registerHealthz } from './routes/healthz.ts';
 import { registerModels } from './routes/models.ts';
+import { registerChat } from './routes/chat.ts';
 
 export type CreateAppOptions = {
   /** Override the boot-bound guard; tests use this to inject a fetch spy. */
@@ -28,6 +29,7 @@ export function createApp(config: Config, options: CreateAppOptions = {}): Fasti
 
   registerHealthz(app, ctx);
   registerModels(app, ctx);
+  registerChat(app, ctx);
 
   return app;
 }
