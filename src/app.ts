@@ -12,6 +12,7 @@ import { createEgressGuard, type EgressGuard } from './egress.ts';
 import { createHealthRegistry, type HealthRegistry } from './health.ts';
 import { createLedger, type Ledger } from './ledger.ts';
 import { createMetrics, type Metrics } from './metrics.ts';
+import { registerAttest } from './routes/attest.ts';
 import { registerHealthz } from './routes/healthz.ts';
 import { registerModels } from './routes/models.ts';
 import { registerChat } from './routes/chat.ts';
@@ -54,6 +55,7 @@ export function createApp(config: Config, options: CreateAppOptions = {}): Fasti
   const app = Fastify({ logger: options.logger ?? false });
 
   registerHealthz(app, ctx);
+  registerAttest(app, ctx);
   registerModels(app, ctx);
   registerChat(app, ctx);
 

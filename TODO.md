@@ -72,7 +72,7 @@ committed — see "Already built" in TASK_PHASE_C.md. Gate for every task below:
 `pnpm typecheck` + `pnpm test` + `bash scripts/scrub-check.sh`, unless its
 section says otherwise.
 
-- [ ] §C1 — `GET /attest` in `src/routes/attest.ts`, mirroring
+- [x] §C1 — `GET /attest` in `src/routes/attest.ts`, mirroring
   `src/routes/healthz.ts`; register it in `src/app.ts`; test in
   `test/attest.test.ts`. Spec: TASK_PHASE_C.md §C1.
 
