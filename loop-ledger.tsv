@@ -28,3 +28,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T22:28:12	loop	qwen	commit	69	12140	27	9	261	- [ ] §E1 — `GET /events` in `src/routes/events.ts`, mirroring
 2026-08-23T22:40:20	loop	qwen	commit	113	18290	45	14	728	- [ ] §E2 — `GET /` serves the dashboard from `src/routes/root.ts`, mirroring
 2026-08-23T22:47:48	loop	qwen	commit	100	16325	41	12	448	- [ ] §E3 — Zero-external-request tests for the served page in
+2026-08-23T22:52:02	loop	qwen	commit	98	16161	40	10	254	- [ ] §E4 — `README.md`: add a Dashboard section, a hero-screenshot note, and
