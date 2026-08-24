@@ -92,6 +92,6 @@ section says otherwise.
   `/attest`, `/metrics`, the ledger and auth in Ops. Extra gate:
   `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_C.md §C5.
 
-- [ ] §C6 — `bash verify.sh` green, then append the Phase C section to
+- [x] §C6 — `bash verify.sh` green, then append the Phase C section to
   `STATUS.md` and set the ROADMAP.md rows and reservations listed in
   TASK_PHASE_C.md §C6. Gate: `bash verify.sh`.

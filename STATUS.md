@@ -37,3 +37,18 @@ What is deliberately not built yet: SSE streaming (501 today), `/attest`,
 `/metrics`, auth, the JSONL ledger, the dashboard, and `docs/PROCESS.md`.
 
 Gate state: `verify.sh` all green as of Phase B.
+
+## Phase C — the ops surface
+
+`GET /attest` reports the boot-bound allowlist (sorted `host:port` strings),
+the allowed/refused counters, refusals per destination, and each backend's
+destination. `GET /metrics` returns Prometheus text with request counts, a
+per-backend latency histogram, failovers, egress counters and backend gauges.
+A JSONL ledger records request, failover and refused-egress events with a
+redaction toggle and an in-memory tail. Static bearer token auth protects
+every endpoint except `/healthz` and `/`.
+
+What is deliberately not built yet: SSE streaming (501 today), the
+dashboard, and `docs/PROCESS.md`.
+
+Gate state: `verify.sh` all green as of Phase C.
