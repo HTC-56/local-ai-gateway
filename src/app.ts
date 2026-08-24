@@ -10,6 +10,8 @@ import type { Config } from './config.ts';
 import type { GatewayContext } from './context.ts';
 import { createEgressGuard, type EgressGuard } from './egress.ts';
 import { createHealthRegistry, type HealthRegistry } from './health.ts';
+import { createLedger, type Ledger } from './ledger.ts';
+import { createMetrics, type Metrics } from './metrics.ts';
 import { registerHealthz } from './routes/healthz.ts';
 import { registerModels } from './routes/models.ts';
 import { registerChat } from './routes/chat.ts';
@@ -19,6 +21,10 @@ export type CreateAppOptions = {
   egress?: EgressGuard;
   /** Override the health registry; tests use this to pre-set backend state. */
   health?: HealthRegistry;
+  /** Override the ledger; tests use this to read `tail()` afterwards. */
+  ledger?: Ledger;
+  /** Override the metrics registry; tests use this to pre-load counters. */
+  metrics?: Metrics;
   /**
    * Start the background probe loop. Production sets it; tests leave it off
    * and drive `ctx.health.probeAll()` by hand so nothing runs in the dark.
@@ -28,11 +34,21 @@ export type CreateAppOptions = {
 };
 
 export function createApp(config: Config, options: CreateAppOptions = {}): FastifyInstance {
-  const egress = options.egress ?? createEgressGuard(config);
+  const ledger = options.ledger ?? createLedger(config);
+  // A refused destination is a ledger event: it is what the dashboard's
+  // egress feed and the attestation panel are for.
+  const egress =
+    options.egress ??
+    createEgressGuard(config, undefined, (destination) => {
+      ledger.append({ event: 'egress_refused', destination });
+    });
+
   const ctx: GatewayContext = {
     config,
     egress,
     health: options.health ?? createHealthRegistry(config, egress),
+    ledger,
+    metrics: options.metrics ?? createMetrics(),
   };
 
   const app = Fastify({ logger: options.logger ?? false });
@@ -41,9 +57,10 @@ export function createApp(config: Config, options: CreateAppOptions = {}): Fasti
   registerModels(app, ctx);
   registerChat(app, ctx);
 
-  // Closing the app must leave no probe timer behind.
+  // Closing the app must leave no probe timer and no open file behind.
   app.addHook('onClose', async () => {
     ctx.health.stop();
+    await ctx.ledger.close();
   });
 
   if (options.probe) ctx.health.start();
