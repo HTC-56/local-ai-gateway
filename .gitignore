@@ -4,3 +4,5 @@ coverage/
 *.log
 .loop-paused
 .escalate-rung
+gateway.yaml
+ledger.jsonl
