@@ -12,8 +12,8 @@ are the one permitted exception to append-only docs.
 | 5 | Egress attestation | SHIPPED | C | allowlist, counters, /attest; refusal path proven in tests |
 | 6 | Ops surface (/healthz, /metrics, ledger, auth) | SHIPPED | C | /healthz, /metrics, /attest, bearer auth, JSONL ledger |
 | 7 | Deploy-grade packaging (config, unit, README, CI) | PARTIAL | B | config, unit, CI, README + failover demo, smoke script; hero screenshot waits on the dashboard |
-| 8 | Dashboard | NOT BUILT | — | |
-| — | docs/PROCESS.md (the loop story) | NOT BUILT | — | written near the end, when there is a ledger to excerpt |
+| 8 | Dashboard | PARTIAL | E | page + self-containment scanner committed; `GET /` and the feed land in Phase E |
+| — | docs/PROCESS.md (the loop story) | NOT BUILT | E | queued as Phase E §E5 — there is a ledger to excerpt now |
 
 When every row reads SHIPPED and verify.sh is green, the project is done — the
 planning lane declares PROJECT SPEC COMPLETE rather than inventing scope.

@@ -122,3 +122,34 @@ TASK_PHASE_D.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
 - [x] §D5 — `bash verify.sh` green, then append the Phase D section to
   `STATUS.md` and set the ROADMAP.md row and reservation listed in
   TASK_PHASE_D.md §D5. Gate: `bash verify.sh`.
+
+## Phase E: the dashboard and the process log — see TASK_PHASE_E.md
+
+The page (`src/dashboard.html`, `src/dashboard.ts` with its 11 tests, and the
+`models` field on `/healthz` rows) is already committed — see "Already built"
+in TASK_PHASE_E.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
+`bash scripts/scrub-check.sh`, unless its section says otherwise.
+
+- [ ] §E1 — `GET /events` in `src/routes/events.ts`, mirroring
+  `src/routes/attest.ts`; register it in `src/app.ts`; test in
+  `test/events.test.ts`. Spec: TASK_PHASE_E.md §E1.
+
+- [ ] §E2 — `GET /` serves the dashboard from `src/routes/root.ts`, mirroring
+  `src/routes/metrics.ts`; register it in `src/app.ts`; test in
+  `test/root.test.ts`. Spec: TASK_PHASE_E.md §E2.
+
+- [ ] §E3 — Zero-external-request tests for the served page in
+  `test/dashboard-egress.test.ts`, mirroring `test/root.test.ts`. Five
+  assertions are listed in TASK_PHASE_E.md §E3. No production code.
+
+- [ ] §E4 — `README.md`: add a Dashboard section, a hero-screenshot note, and
+  document `/events` in Ops. Extra gate: `bash scripts/readme-lint.sh`.
+  Spec: TASK_PHASE_E.md §E4.
+
+- [ ] §E5 — `docs/PROCESS.md`: the loop story in one page plus a sanitized
+  8-row excerpt of `loop-ledger.tsv`. Five parts are listed in
+  TASK_PHASE_E.md §E5.
+
+- [ ] §E6 — `bash verify.sh` green, then append the Phase E section to
+  `STATUS.md` and set the ROADMAP.md rows and reservations listed in
+  TASK_PHASE_E.md §E6. Gate: `bash verify.sh`.
