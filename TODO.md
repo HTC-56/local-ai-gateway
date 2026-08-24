@@ -134,7 +134,7 @@ in TASK_PHASE_E.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   `src/routes/attest.ts`; register it in `src/app.ts`; test in
   `test/events.test.ts`. Spec: TASK_PHASE_E.md §E1.
 
-- [ ] §E2 — `GET /` serves the dashboard from `src/routes/root.ts`, mirroring
+- [x] §E2 — `GET /` serves the dashboard from `src/routes/root.ts`, mirroring
   `src/routes/metrics.ts`; register it in `src/app.ts`; test in
   `test/root.test.ts`. Spec: TASK_PHASE_E.md §E2.
 
