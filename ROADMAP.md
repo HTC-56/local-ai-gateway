@@ -8,7 +8,7 @@ are the one permitted exception to append-only docs.
 | 1 | One endpoint, many backends | SHIPPED | B | chat + models across N backends, with failover |
 | 2 | Logical model routing | SHIPPED | A | config resolver + /v1/models |
 | 3 | Health + failover | SHIPPED | B | probes, circuit + cooldown, priority-list failover |
-| 4 | SSE streaming pass-through | IN FLIGHT | D | engine `src/stream.ts` shipped; route, tests and docs are Phase D tasks |
+| 4 | SSE streaming pass-through | SHIPPED | D | chunk-for-chunk pass-through; failover at request start only |
 | 5 | Egress attestation | SHIPPED | C | allowlist, counters, /attest; refusal path proven in tests |
 | 6 | Ops surface (/healthz, /metrics, ledger, auth) | SHIPPED | C | /healthz, /metrics, /attest, bearer auth, JSONL ledger |
 | 7 | Deploy-grade packaging (config, unit, README, CI) | PARTIAL | B | config, unit, CI, README + failover demo, smoke script; hero screenshot waits on the dashboard |
@@ -38,3 +38,6 @@ planning lane declares PROJECT SPEC COMPLETE rather than inventing scope.
   operator for the token and send it on its own polls. Home: TASK_PHASE_C.md §C4.
 - **The ledger's only body-derived field is `detail`.** Bodies are never
   written; `ledger.redact` drops the summary too. Home: TASK_PHASE_C.md §C3.
+- **No mid-stream failover splice** — a backend that dies mid-stream ends the
+  client's stream early; the gateway will not splice a second backend into a
+  stream in progress. Home: TASK_PHASE_D.md §D1.

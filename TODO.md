@@ -119,6 +119,6 @@ TASK_PHASE_D.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   the no-mid-stream-splice limitation; fix the stale Limitations clause. Extra
   gate: `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_D.md §D4.
 
-- [ ] §D5 — `bash verify.sh` green, then append the Phase D section to
+- [x] §D5 — `bash verify.sh` green, then append the Phase D section to
   `STATUS.md` and set the ROADMAP.md row and reservation listed in
   TASK_PHASE_D.md §D5. Gate: `bash verify.sh`.

@@ -48,7 +48,18 @@ A JSONL ledger records request, failover and refused-egress events with a
 redaction toggle and an in-memory tail. Static bearer token auth protects
 every endpoint except `/healthz` and `/`.
 
-What is deliberately not built yet: SSE streaming (501 today), the
-dashboard, and `docs/PROCESS.md`.
+What is deliberately not built yet: the dashboard and `docs/PROCESS.md`.
 
 Gate state: `verify.sh` all green as of Phase C.
+
+## Phase D — SSE streaming pass-through
+
+`POST /v1/chat/completions` now streams when `stream: true`, proxying upstream
+SSE chunks chunk-for-chunk through `src/stream.ts`. Failover runs at request
+start only — the gateway walks resolved backends, skips open circuits, and
+chooses the first live one — but a backend that dies mid-stream ends the
+client's stream early with no splice.
+
+What is deliberately not built yet: the dashboard and `docs/PROCESS.md`.
+
+Gate state: `verify.sh` all green as of Phase D.
