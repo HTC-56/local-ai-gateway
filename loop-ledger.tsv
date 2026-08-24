@@ -9,3 +9,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T20:16:53	loop	qwen	commit	47	7696	18	4	550	- [ ] §B1 — `/healthz` serves live state from `ctx.health.snapshot()` in
 2026-08-23T20:19:23	loop	qwen	commit	79	13068	30	6	150	- [ ] §B2 — Failover in `src/routes/chat.ts`: walk every resolved target, skip
 2026-08-23T20:32:18	loop	qwen	commit	75	22062	28	5	775	- [ ] §B3 — Failover tests in `test/failover.test.ts`, mirroring
+2026-08-23T20:37:53	loop	qwen	commit	81	23025	31	7	335	- [ ] §B4 — `scripts/smoke-local.sh`, the local-only end-to-end plus forced
