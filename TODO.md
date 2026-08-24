@@ -14,7 +14,7 @@ committed — see "Already built" in TASK_PHASE_A.md. Gate for every task below:
 `pnpm typecheck` + `pnpm test` + `bash scripts/scrub-check.sh`, unless its
 section says otherwise.
 
-- [ ] §A6 — `GET /v1/models` in `src/routes/models.ts`, mirroring
+- [x] §A6 — `GET /v1/models` in `src/routes/models.ts`, mirroring
   `src/routes/healthz.ts`; register it in `src/app.ts`; test in
   `test/models.test.ts`. Spec: TASK_PHASE_A.md §A6.
 
