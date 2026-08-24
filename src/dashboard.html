@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>local-ai-gateway — fleet</title>
+<!-- Empty data: icon. A no-egress gateway's own page must not fetch a favicon. -->
+<link rel="icon" href="data:,">
+<style>
+  :root {
+    color-scheme: dark light;
+    --bg: #0b0f14;
+    --panel: #121821;
+    --line: #1f2a37;
+    --text: #e6edf3;
+    --dim: #8b98a5;
+    --ok: #3fb950;
+    --warn: #d29922;
+    --bad: #f85149;
+    --accent: #58a6ff;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f8fa;
+      --panel: #ffffff;
+      --line: #d0d7de;
+      --text: #1f2328;
+      --dim: #59636e;
+      --ok: #1a7f37;
+      --warn: #9a6700;
+      --bad: #cf222e;
+      --accent: #0969da;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+  h1 { font-size: 15px; margin: 0; letter-spacing: 0.04em; }
+  h2 {
+    font-size: 12px;
+    margin: 0 0 10px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .spacer { flex: 1; }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--dim);
+    display: inline-block;
+  }
+  .dot.live { background: var(--ok); }
+  .dot.stale { background: var(--bad); }
+  input {
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 5px 8px;
+    min-width: 200px;
+  }
+  button {
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--accent); }
+  main { padding: 20px; display: grid; gap: 20px; max-width: 1200px; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  #attest { border-color: var(--accent); }
+  .claim { color: var(--dim); margin: 0 0 12px; max-width: 70ch; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 2px 10px;
+    color: var(--dim);
+  }
+  .chip.allow { border-color: var(--ok); color: var(--ok); }
+  .stats { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 14px; }
+  .stat .n { font-size: 22px; }
+  .stat .k { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .stat.bad .n { color: var(--bad); }
+  .stat.ok .n { color: var(--ok); }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .card { border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+  .card .top { display: flex; align-items: center; gap: 8px; }
+  .card .name { font-weight: 600; }
+  .pill { border-radius: 999px; padding: 1px 9px; font-size: 11px; border: 1px solid var(--line); color: var(--dim); }
+  .pill.healthy { color: var(--ok); border-color: var(--ok); }
+  .pill.unhealthy { color: var(--bad); border-color: var(--bad); }
+  .pill.unknown { color: var(--warn); border-color: var(--warn); }
+  .meta { color: var(--dim); margin-top: 6px; word-break: break-all; }
+  .spark { width: 100%; height: 26px; margin-top: 8px; display: block; }
+  .spark polyline { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .err { color: var(--bad); margin-top: 6px; word-break: break-word; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 3px 10px 3px 0; vertical-align: top; }
+  .feed td:first-child { color: var(--dim); white-space: nowrap; }
+  .tag { font-size: 11px; border-radius: 4px; padding: 1px 6px; border: 1px solid var(--line); }
+  .tag.failover { color: var(--warn); border-color: var(--warn); }
+  .tag.egress_refused { color: var(--bad); border-color: var(--bad); }
+  .tag.request { color: var(--dim); }
+  .empty { color: var(--dim); }
+  .banner { color: var(--warn); padding: 8px 20px; border-bottom: 1px solid var(--line); display: none; }
+  .banner.on { display: block; }
+</style>
+</head>
+<body>
+<header>
+  <span class="dot" id="dot"></span>
+  <h1>local-ai-gateway</h1>
+  <span class="spacer"></span>
+  <label for="token" class="empty">bearer token</label>
+  <input id="token" type="password" autocomplete="off" placeholder="leave empty if auth is off">
+  <button id="save" type="button">use</button>
+</header>
+<div class="banner" id="banner"></div>
+
+<main>
+  <section id="attest">
+    <h2>Egress attestation</h2>
+    <p class="claim">
+      This gateway may open a socket to the destinations below and to nothing
+      else. The allowlist is bound at boot from the configured backends;
+      every other destination is refused before a connection is attempted.
+    </p>
+    <div class="chips" id="allowlist"><span class="empty">waiting for /attest…</span></div>
+    <div class="stats">
+      <div class="stat ok"><div class="n" id="egress-allowed">–</div><div class="k">allowed</div></div>
+      <div class="stat bad"><div class="n" id="egress-refused">–</div><div class="k">refused</div></div>
+    </div>
+    <table id="refusals"></table>
+  </section>
+
+  <section id="throughput">
+    <h2>Throughput</h2>
+    <div class="stats">
+      <div class="stat"><div class="n" id="req-total">–</div><div class="k">requests</div></div>
+      <div class="stat ok"><div class="n" id="req-ok">–</div><div class="k">ok</div></div>
+      <div class="stat bad"><div class="n" id="req-error">–</div><div class="k">errors</div></div>
+      <div class="stat"><div class="n" id="failovers">–</div><div class="k">failovers</div></div>
+      <div class="stat"><div class="n" id="backends-up">–</div><div class="k">backends up</div></div>
+    </div>
+  </section>
+
+  <section id="fleet-panel">
+    <h2>Fleet <span id="fleet-status" class="empty"></span></h2>
+    <div class="grid" id="fleet"><span class="empty">waiting for /healthz…</span></div>
+  </section>
+
+  <section id="feed-panel">
+    <h2>Events</h2>
+    <table class="feed" id="feed"><tr><td class="empty">waiting for /events…</td></tr></table>
+  </section>
+</main>
+
+<template id="card-tpl">
+  <div class="card">
+    <div class="top"><span class="name"></span><span class="pill"></span></div>
+    <div class="meta url"></div>
+    <svg class="spark" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><polyline points=""></polyline></svg>
+    <div class="meta latency"></div>
+    <div class="meta probe"></div>
+    <div class="chips models"></div>
+    <div class="err"></div>
+  </div>
+</template>
+
+<script>
+(function () {
+  'use strict';
+
+  var POLL_MS = 3000;
+  var TREND = 24;
+  var TOKEN_KEY = 'local-ai-gateway.token';
+
+  var token = '';
+  try { token = window.sessionStorage.getItem(TOKEN_KEY) || ''; } catch (e) { token = ''; }
+
+  var trend = {};
+  var el = function (id) { return document.getElementById(id); };
+  var tokenInput = el('token');
+  tokenInput.value = token;
+
+  el('save').addEventListener('click', function () {
+    token = tokenInput.value.trim();
+    try { window.sessionStorage.setItem(TOKEN_KEY, token); } catch (e) { /* private mode */ }
+    tick();
+  });
+
+  function banner(message) {
+    var node = el('banner');
+    node.textContent = message || '';
+    node.className = message ? 'banner on' : 'banner';
+  }
+
+  function text(node, value) { node.textContent = value; return node; }
+
+  /** Same-origin fetch only. The dashboard of a no-egress gateway asks nobody else. */
+  function api(path, asText) {
+    var headers = {};
+    if (token) { headers.authorization = 'Bearer ' + token; }
+    return fetch(path, { headers: headers, cache: 'no-store' }).then(function (res) {
+      if (res.status === 401) { throw new Error('401'); }
+      if (!res.ok) { throw new Error(path + ' -> ' + res.status); }
+      return asText ? res.text() : res.json();
+    });
+  }
+
+  /** Minimal Prometheus text parser: name -> [{ labels, value }]. */
+  function parseProm(body) {
+    var series = {};
+    var lines = String(body).split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line || line.charAt(0) === '#') { continue; }
+      var match = /^([A-Za-z_][A-Za-z0-9_]*)(\{[^}]*\})?\s+(-?[0-9.eE+]+)$/.exec(line);
+      if (!match) { continue; }
+      var labels = {};
+      if (match[2]) {
+        var inner = match[2].slice(1, -1);
+        var pairs = inner.match(/[A-Za-z_][A-Za-z0-9_]*="(?:[^"\\]|\\.)*"/g) || [];
+        for (var p = 0; p < pairs.length; p++) {
+          var eq = pairs[p].indexOf('=');
+          labels[pairs[p].slice(0, eq)] = pairs[p].slice(eq + 2, -1);
+        }
+      }
+      (series[match[1]] = series[match[1]] || []).push({ labels: labels, value: Number(match[3]) });
+    }
+    return series;
+  }
+
+  function sum(series, name, filter) {
+    var rows = series[name] || [];
+    var total = 0;
+    for (var i = 0; i < rows.length; i++) {
+      if (!filter || filter(rows[i].labels)) { total += rows[i].value; }
+    }
+    return total;
+  }
+
+  function renderAttest(attest) {
+    var chips = el('allowlist');
+    chips.textContent = '';
+    var list = attest.allowlist || [];
+    if (!list.length) { chips.appendChild(text(document.createElement('span'), 'empty allowlist')).className = 'empty'; }
+    for (var i = 0; i < list.length; i++) {
+      var chip = text(document.createElement('span'), list[i]);
+      chip.className = 'chip allow';
+      chips.appendChild(chip);
+    }
+    text(el('egress-allowed'), String(attest.allowed || 0));
+    text(el('egress-refused'), String(attest.refused || 0));
+
+    var table = el('refusals');
+    table.textContent = '';
+    var byDest = attest.refusedByDestination || {};
+    var keys = Object.keys(byDest).sort();
+    for (var k = 0; k < keys.length; k++) {
+      var row = document.createElement('tr');
+      row.appendChild(text(document.createElement('td'), keys[k]));
+      row.appendChild(text(document.createElement('td'), String(byDest[keys[k]]) + ' refused'));
+      table.appendChild(row);
+    }
+  }
+
+  function sparkPoints(samples) {
+    if (!samples.length) { return ''; }
+    var max = Math.max.apply(null, samples) || 1;
+    var step = samples.length > 1 ? 100 / (samples.length - 1) : 0;
+    var points = [];
+    for (var i = 0; i < samples.length; i++) {
+      var y = 23 - (samples[i] / max) * 22;
+      points.push((i * step).toFixed(1) + ',' + y.toFixed(1));
+    }
+    return points.join(' ');
+  }
+
+  function renderFleet(health) {
+    var backends = health.backends || [];
+    text(el('fleet-status'), backends.length ? '— ' + (health.status || '') : '');
+
+    var grid = el('fleet');
+    grid.textContent = '';
+    if (!backends.length) {
+      grid.appendChild(text(document.createElement('span'), 'no backends configured')).className = 'empty';
+      return;
+    }
+
+    var up = 0;
+    for (var i = 0; i < backends.length; i++) {
+      var b = backends[i];
+      if (b.state === 'healthy') { up += 1; }
+
+      var samples = trend[b.name] || (trend[b.name] = []);
+      if (typeof b.latencyMs === 'number') {
+        samples.push(b.latencyMs);
+        if (samples.length > TREND) { samples.shift(); }
+      }
+
+      var card = el('card-tpl').content.cloneNode(true);
+      text(card.querySelector('.name'), b.name);
+      var pill = text(card.querySelector('.pill'), b.state);
+      pill.className = 'pill ' + b.state;
+      text(card.querySelector('.url'), b.baseUrl || '');
+      card.querySelector('polyline').setAttribute('points', sparkPoints(samples));
+      text(card.querySelector('.latency'),
+        typeof b.latencyMs === 'number' ? 'last ' + b.latencyMs + ' ms' : 'no latency yet');
+      text(card.querySelector('.probe'),
+        (b.lastProbe ? 'probed ' + b.lastProbe.replace('T', ' ').replace('Z', '') : 'never probed') +
+        (b.consecutiveFailures ? ' — ' + b.consecutiveFailures + ' consecutive failures' : ''));
+
+      var models = card.querySelector('.models');
+      var names = b.models || [];
+      for (var m = 0; m < names.length; m++) {
+        var chip = text(document.createElement('span'), names[m]);
+        chip.className = 'chip';
+        models.appendChild(chip);
+      }
+      text(card.querySelector('.err'), b.lastError || '');
+      grid.appendChild(card);
+    }
+    text(el('backends-up'), up + '/' + backends.length);
+  }
+
+  function renderMetrics(body) {
+    var series = parseProm(body);
+    var total = sum(series, 'gateway_requests_total');
+    var ok = sum(series, 'gateway_requests_total', function (l) { return l.outcome === 'ok'; });
+    text(el('req-total'), String(total));
+    text(el('req-ok'), String(ok));
+    text(el('req-error'), String(total - ok));
+    text(el('failovers'), String(sum(series, 'gateway_failovers_total')));
+  }
+
+  function renderFeed(payload) {
+    var events = (payload.events || []).slice().reverse();
+    var table = el('feed');
+    table.textContent = '';
+    if (!events.length) {
+      var blank = document.createElement('tr');
+      blank.appendChild(text(document.createElement('td'), 'no events yet')).className = 'empty';
+      table.appendChild(blank);
+      return;
+    }
+    for (var i = 0; i < events.length; i++) {
+      var e = events[i];
+      var parts = [];
+      if (e.model) { parts.push(e.model); }
+      if (e.backend) { parts.push('-> ' + e.backend); }
+      if (e.destination) { parts.push(e.destination); }
+      if (typeof e.status === 'number') { parts.push(String(e.status)); }
+      if (typeof e.latencyMs === 'number') { parts.push(e.latencyMs + ' ms'); }
+      if (e.stream) { parts.push('stream'); }
+      if (e.error) { parts.push(e.error); }
+
+      var row = document.createElement('tr');
+      row.appendChild(text(document.createElement('td'), String(e.ts || '').replace('T', ' ').replace('Z', '')));
+      var tagCell = document.createElement('td');
+      var tag = text(document.createElement('span'), e.event);
+      tag.className = 'tag ' + e.event;
+      tagCell.appendChild(tag);
+      row.appendChild(tagCell);
+      row.appendChild(text(document.createElement('td'), parts.join(' ')));
+      table.appendChild(row);
+    }
+  }
+
+  var timer = null;
+
+  function tick() {
+    if (timer) { window.clearTimeout(timer); timer = null; }
+
+    var jobs = [
+      api('/healthz').then(renderFleet),
+      api('/attest').then(renderAttest),
+      api('/metrics', true).then(renderMetrics),
+      api('/events').then(renderFeed)
+    ];
+
+    Promise.all(jobs.map(function (job) {
+      return job.then(function () { return null; }, function (err) { return err; });
+    })).then(function (errors) {
+      var failed = errors.filter(Boolean);
+      var unauthorized = failed.some(function (err) { return err.message === '401'; });
+      el('dot').className = 'dot ' + (failed.length ? 'stale' : 'live');
+      if (unauthorized) {
+        banner('401 from the gateway — enter the bearer token above. /healthz and this page stay open; the rest need it.');
+      } else if (failed.length) {
+        banner(failed[0].message);
+      } else {
+        banner('');
+      }
+      timer = window.setTimeout(tick, POLL_MS);
+    });
+  }
+
+  tick();
+})();
+</script>
+</body>
+</html>
