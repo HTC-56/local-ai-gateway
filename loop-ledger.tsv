@@ -15,3 +15,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T21:10:24	plan	claude	commit	62	103496	40	13	521	plan next phase
 2026-08-23T21:14:46	loop	qwen	commit	67	13092	29	11	183	- [ ] §C1 — `GET /attest` in `src/routes/attest.ts`, mirroring
 2026-08-23T21:16:59	loop	qwen	commit	112	23188	48	17	133	- [ ] §C2 — `GET /metrics` in `src/routes/metrics.ts`, mirroring
+2026-08-23T21:21:32	loop	qwen	commit	132	30471	51	10	273	- [ ] §C3 — `src/routes/chat.ts` reports each attempt to `ctx.metrics` and
