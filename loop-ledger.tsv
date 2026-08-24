@@ -10,3 +10,4 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T20:19:23	loop	qwen	commit	79	13068	30	6	150	- [ ] §B2 — Failover in `src/routes/chat.ts`: walk every resolved target, skip
 2026-08-23T20:32:18	loop	qwen	commit	75	22062	28	5	775	- [ ] §B3 — Failover tests in `test/failover.test.ts`, mirroring
 2026-08-23T20:37:53	loop	qwen	commit	81	23025	31	7	335	- [ ] §B4 — `scripts/smoke-local.sh`, the local-only end-to-end plus forced
+2026-08-23T20:49:39	loop	qwen	commit	77	12377	31	6	706	- [ ] §B5 — `README.md`: add the 10-minute failover demo, rewrite Ops for the
