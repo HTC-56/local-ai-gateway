@@ -95,6 +95,22 @@ Prove the failover path with two model servers on documentation addresses.
 The gateway skips a failed backend for `health.cooldownMs` before it tries it
 again.
 
+## Streaming
+
+Pass `"stream": true` in the request body and the gateway proxies the upstream's
+Server-Sent Events straight through, chunk for chunk, ending with `data: [DONE]`.
+
+```bash
+curl -N http://localhost:8080/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"model": "fast", "stream": true, "messages": [{"role": "user", "content": "Hi"}]}'
+```
+
+The gateway picks a backend at request start and stays with it. If a backend dies
+mid-stream the client's stream ends early and the client retries; the gateway will
+not splice a second backend into a stream in progress, because that would mean
+handing the client tokens the first backend never produced.
+
 ## Configuration
 
 Copy `deploy/gateway.example.yaml` to `gateway.yaml` and edit:
@@ -168,8 +184,8 @@ The dashboard is a later phase.
 - No TLS — front the gateway with caddy or nginx if you need HTTPS.
 - `/healthz` is deliberately unauthenticated so a load balancer can probe it.
 - Failover walks the priority list at request start, skipping backends whose
-  circuit is open; there is still no queueing, no load balancing and no
-  mid-stream failover.
+  circuit is open; there is still no queueing, no load balancing. Streaming
+  has no mid-stream failover — see the Streaming section above.
 
 ## Development
 

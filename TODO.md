@@ -115,7 +115,7 @@ TASK_PHASE_D.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
   mirroring `test/failover.test.ts`. Four assertions are listed in
   TASK_PHASE_D.md §D3. No production code in this task.
 
-- [ ] §D4 — `README.md`: add a Streaming section with a `curl -N` example and
+- [x] §D4 — `README.md`: add a Streaming section with a `curl -N` example and
   the no-mid-stream-splice limitation; fix the stale Limitations clause. Extra
   gate: `bash scripts/readme-lint.sh`. Spec: TASK_PHASE_D.md §D4.
 
