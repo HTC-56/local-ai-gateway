@@ -13,6 +13,7 @@
 import type { FastifyInstance } from 'fastify';
 import type { GatewayContext } from '../context.ts';
 import { resolveLogical } from '../config.ts';
+import { pipeSseResponse } from '../stream.ts';
 
 export function registerChat(app: FastifyInstance, ctx: GatewayContext): void {
   app.post('/v1/chat/completions', async (request, reply) => {
@@ -39,17 +40,6 @@ export function registerChat(app: FastifyInstance, ctx: GatewayContext): void {
           message: `Model '${logicalModel}' not found`,
           type: 'invalid_request_error',
           code: 'model_not_found',
-        },
-      });
-    }
-
-    // Streaming not implemented → 501
-    if (body.stream === true) {
-      return reply.status(501).send({
-        error: {
-          message: 'Streaming is not implemented',
-          type: 'invalid_request_error',
-          code: 'streaming_not_implemented',
         },
       });
     }
@@ -98,7 +88,14 @@ export function registerChat(app: FastifyInstance, ctx: GatewayContext): void {
             latencyMs: elapsed,
             attempts: attempted,
             detail,
+            ...(body.stream === true && { stream: true }),
           });
+
+          if (body.stream === true) {
+            await pipeSseResponse(reply, response);
+            return reply;
+          }
+
           const responseBody = await response.json();
           return reply.status(response.status).send(responseBody);
         }

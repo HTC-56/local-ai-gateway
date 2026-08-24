@@ -103,7 +103,7 @@ The engine (`src/stream.ts` with its 7 tests, the streaming mock upstream, the
 TASK_PHASE_D.md. Gate for every task below: `pnpm typecheck` + `pnpm test` +
 `bash scripts/scrub-check.sh`, unless its section says otherwise.
 
-- [ ] §D1 — `src/routes/chat.ts` streams: drop the 501 block, pipe the upstream
+- [x] §D1 — `src/routes/chat.ts` streams: drop the 501 block, pipe the upstream
   answer with `pipeSseResponse` from `../stream.ts` in the success branch, and
   rewrite the one 501 test in `test/chat.test.ts`. Spec: TASK_PHASE_D.md §D1.
 

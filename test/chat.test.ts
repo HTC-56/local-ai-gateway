@@ -39,7 +39,7 @@ describe('POST /v1/chat/completions', () => {
     }
   });
 
-  it('stream: true returns 501 and upstream receives no chat request', async () => {
+  it('stream: true pipes SSE from upstream', async () => {
     const upstream = await startMockUpstream();
     const config = parseConfig({
       backends: [{ name: 'box-a', baseUrl: upstream.baseUrl }],
@@ -56,16 +56,19 @@ describe('POST /v1/chat/completions', () => {
         payload: { model: 'fast', messages: [], stream: true },
       });
 
-      expect(response.statusCode).toBe(501);
+      expect(response.statusCode).toBe(200);
+      expect(response.headers['content-type']).toContain('text/event-stream');
 
-      const body = response.json() as { error: { code: string } };
-      expect(body.error.code).toBe('streaming_not_implemented');
+      const body = response.body as string;
+      expect(body).toContain('data: [DONE]');
 
-      // Upstream should have no chat completion requests
+      // Upstream should have received exactly one chat request with stream: true
       const chatRequests = upstream.requests.filter(
         (r) => r.url.includes('/chat/completions'),
       );
-      expect(chatRequests).toHaveLength(0);
+      expect(chatRequests).toHaveLength(1);
+      const requestBody = chatRequests[0]!.body as Record<string, unknown>;
+      expect(requestBody.stream).toBe(true);
     } finally {
       await app.close();
       await upstream.close();
