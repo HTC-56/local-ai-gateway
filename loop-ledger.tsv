@@ -18,3 +18,5 @@ time	lane	model	result	turns	out_tok	tools	edits	dur_s	task
 2026-08-23T21:21:32	loop	qwen	commit	132	30471	51	10	273	- [ ] §C3 — `src/routes/chat.ts` reports each attempt to `ctx.metrics` and
 2026-08-23T21:24:33	loop	qwen	commit	152	33984	58	12	181	- [ ] §C4 — Static bearer token auth in `src/auth.ts`, an `onRequest` hook
 2026-08-23T21:27:48	loop	qwen	commit	153	27677	58	15	195	- [ ] §C5 — `README.md`: fix the failover demo's YAML keys, document
+2026-08-23T21:38:34	plan	claude	commit	54	71591	30	0	410	plan next phase
+2026-08-23T21:43:48	loop	qwen	commit	47	7803	18	5	316	- [ ] §D1 — `src/routes/chat.ts` streams: drop the 501 block, pipe the upstream
